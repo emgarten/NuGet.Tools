@@ -1,0 +1,9 @@
+{
+  "profiles": [
+    {
+      "name": "NupkgParity",
+      "commandName": "NupkgParity",
+      "commandLineArgs": "\"C:\\Program Files (x86)\\Microsoft ASP.NET\\ASP.NET Web Stack 5\\Packages\""
+    }
+  ]
+}

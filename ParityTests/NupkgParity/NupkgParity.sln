@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22609.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NupkgParity", "NupkgParity\NupkgParity.kproj", "{7F55A072-AFFF-46FA-9BBF-46AC9626CA5F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NuGet.Packaging", "..\..\..\NuGet.Packaging\src\NuGet.Packaging\NuGet.Packaging.kproj", "{BD6BBC90-60BE-4E7D-8458-91E9CDA66ABE}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NuGet.Packaging.Core", "..\..\..\NuGet.Packaging\src\NuGet.Packaging.Core\NuGet.Packaging.Core.kproj", "{D65583E4-8084-466A-BA4B-55A797EA047B}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NuGet.Frameworks", "..\..\..\NuGet.Packaging\src\NuGet.Frameworks\NuGet.Frameworks.kproj", "{9A9A9F26-597A-4FA6-A4F1-415063484D9C}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NuGet.Versioning", "..\..\..\NuGet.Versioning\src\NuGet.Versioning\NuGet.Versioning.kproj", "{24E62AB7-64E4-4975-9417-883559D1BC19}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NuGet.Packaging.Core.Types", "..\..\..\NuGet.Packaging\src\NuGet.Packaging.Core.Types\NuGet.Packaging.Core.Types.kproj", "{46275450-3B62-4E89-8F7E-3FE2EE8513D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F55A072-AFFF-46FA-9BBF-46AC9626CA5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F55A072-AFFF-46FA-9BBF-46AC9626CA5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F55A072-AFFF-46FA-9BBF-46AC9626CA5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F55A072-AFFF-46FA-9BBF-46AC9626CA5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD6BBC90-60BE-4E7D-8458-91E9CDA66ABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD6BBC90-60BE-4E7D-8458-91E9CDA66ABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD6BBC90-60BE-4E7D-8458-91E9CDA66ABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD6BBC90-60BE-4E7D-8458-91E9CDA66ABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D65583E4-8084-466A-BA4B-55A797EA047B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D65583E4-8084-466A-BA4B-55A797EA047B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D65583E4-8084-466A-BA4B-55A797EA047B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D65583E4-8084-466A-BA4B-55A797EA047B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A9A9F26-597A-4FA6-A4F1-415063484D9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A9A9F26-597A-4FA6-A4F1-415063484D9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A9A9F26-597A-4FA6-A4F1-415063484D9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A9A9F26-597A-4FA6-A4F1-415063484D9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24E62AB7-64E4-4975-9417-883559D1BC19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24E62AB7-64E4-4975-9417-883559D1BC19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24E62AB7-64E4-4975-9417-883559D1BC19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24E62AB7-64E4-4975-9417-883559D1BC19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46275450-3B62-4E89-8F7E-3FE2EE8513D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46275450-3B62-4E89-8F7E-3FE2EE8513D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46275450-3B62-4E89-8F7E-3FE2EE8513D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46275450-3B62-4E89-8F7E-3FE2EE8513D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

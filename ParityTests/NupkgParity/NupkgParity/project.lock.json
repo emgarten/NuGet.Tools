@@ -1,0 +1,35 @@
+{
+  "locked": false,
+  "version": 1,
+  "projectFileDependencyGroups": {
+    "": [
+      "NuGet.Packaging >= 3.0.0-*",
+      "Nuget.Core >= 2.8.3"
+    ]
+  },
+  "libraries": {
+    "Microsoft.Web.Xdt/2.1.1": {
+      "sha": "PHoqib4d+f2lmnluVwMFM8M4AF8Z7y2g18hUTi5UCKkjNQIzkNnB1uyqnS5od2sMsRcI/9mexQjDO6e5dL/MeA==",
+      "contents": {
+        "Microsoft.Web.Xdt.2.1.1.nupkg": {},
+        "Microsoft.Web.Xdt.2.1.1.nupkg.sha512": {},
+        "Microsoft.Web.Xdt.nuspec": {},
+        "lib\\net40\\Microsoft.Web.XmlTransform.dll": {}
+      }
+    },
+    "Nuget.Core/2.8.3": {
+      "sha": "2Z+8+UzWeKPl0D2uFGZGZxXM61cRcjLi6UjUqxt0PBMpMREt+G/7E12o/l/YrpBQXiNpGAd2i0s2X4j/GKfNdg==",
+      "dependencySets": {
+        "*": {
+          "Microsoft.Web.Xdt": "2.1.0"
+        }
+      },
+      "contents": {
+        "Nuget.Core.2.8.3.nupkg": {},
+        "Nuget.Core.2.8.3.nupkg.sha512": {},
+        "Nuget.Core.nuspec": {},
+        "lib\\net40-Client\\NuGet.Core.dll": {}
+      }
+    }
+  }
+}

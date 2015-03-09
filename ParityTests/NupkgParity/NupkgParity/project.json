@@ -1,0 +1,13 @@
+﻿{
+    "version": "1.0.0-*",
+    "dependencies": {
+        "NuGet.Packaging": "3.0.0-*",
+        "Nuget.Core": "2.8.3"
+    },
+    "commands": {
+        "NupkgParity": "run"
+    },
+    "frameworks" : {
+        "dnx451" : { }
+    }
+}
