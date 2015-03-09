@@ -21,23 +21,24 @@ namespace NupkgParity
         {
             if (args.Length != 1)
             {
-                Console.WriteLine(".exe <nupkg folder path>");
+                Console.WriteLine(".exe <nupkg folder path> <take>");
                 Environment.Exit(10);
             }
 
             bool run = true;
 
             Console.CancelKeyPress += delegate {
+                Console.WriteLine("shutting down");
                 run = false;
             };
 
-
             DirectoryInfo nupkgDir = new DirectoryInfo(args[0]);
+            int take = Int32.Parse(args[1]);
 
             ConcurrentBag<NupkgDifference> diffs = new ConcurrentBag<NupkgDifference>();
             ConcurrentBag<string> exceptions = new ConcurrentBag<string>();
 
-            var files = nupkgDir.GetFiles("*.nupkg", SearchOption.AllDirectories).OrderBy(e => Guid.NewGuid()).ToArray();
+            var files = nupkgDir.GetFiles("*.nupkg", SearchOption.AllDirectories).OrderBy(e => Guid.NewGuid()).Take(take).ToArray();
 
             ParallelOptions options = new ParallelOptions();
             options.MaxDegreeOfParallelism = 8;
