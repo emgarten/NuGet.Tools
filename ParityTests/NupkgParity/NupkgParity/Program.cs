@@ -19,7 +19,7 @@ namespace NupkgParity
 
         static void Main(string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length != 2)
             {
                 Console.WriteLine(".exe <nupkg folder path> <take>");
                 Environment.Exit(10);
