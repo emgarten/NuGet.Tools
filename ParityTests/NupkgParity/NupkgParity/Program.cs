@@ -25,93 +25,108 @@ namespace NupkgParity
                 Environment.Exit(10);
             }
 
+            bool run = true;
+
+            Console.CancelKeyPress += delegate {
+                run = false;
+            };
+
+
             DirectoryInfo nupkgDir = new DirectoryInfo(args[0]);
 
             ConcurrentBag<NupkgDifference> diffs = new ConcurrentBag<NupkgDifference>();
             ConcurrentBag<string> exceptions = new ConcurrentBag<string>();
 
-            var files = nupkgDir.GetFiles("*.nupkg", SearchOption.AllDirectories).OrderBy(e => e.Name).ToArray();
+            var files = nupkgDir.GetFiles("*.nupkg", SearchOption.AllDirectories).OrderBy(e => Guid.NewGuid()).ToArray();
 
             ParallelOptions options = new ParallelOptions();
             options.MaxDegreeOfParallelism = 8;
 
-            Parallel.ForEach(files, options, file =>
+            try
             {
-                try
+                Parallel.ForEach(files, options, file =>
                 {
-                    Console.WriteLine(file.Name);
-
-                    PackageReader v3Reader = new PackageReader(file.OpenRead());
-                    IPackage v2Reader = new ZipPackage(file.FullName);
-
-                    var refTest = ReferenceAssemblyTest(v2Reader, v3Reader);
-                    if (refTest != null)
+                    if (run)
                     {
-                        refTest.Package = file.Name;
-                        diffs.Add(refTest);
-                    }
+                        try
+                        {
+                            Console.WriteLine(file.Name);
 
-                    var gacTest = FrameworkAssemblyTest(v2Reader, v3Reader);
-                    if (gacTest != null)
-                    {
-                        gacTest.Package = file.Name;
-                        diffs.Add(gacTest);
-                    }
+                            PackageReader v3Reader = new PackageReader(file.OpenRead());
+                            IPackage v2Reader = new ZipPackage(file.FullName);
 
-                    var buildTest = BuildItemsTest(v2Reader, v3Reader);
-                    if (buildTest != null)
-                    {
-                        buildTest.Package = file.Name;
-                        diffs.Add(buildTest);
-                    }
+                            var refTest = ReferenceAssemblyTest(v2Reader, v3Reader);
+                            if (refTest != null)
+                            {
+                                refTest.Package = file.Name;
+                                diffs.Add(refTest);
+                            }
 
-                    var contentTest = ContentItemsTest(v2Reader, v3Reader);
-                    if (contentTest != null)
-                    {
-                        contentTest.Package = file.Name;
-                        diffs.Add(contentTest);
-                    }
+                            var gacTest = FrameworkAssemblyTest(v2Reader, v3Reader);
+                            if (gacTest != null)
+                            {
+                                gacTest.Package = file.Name;
+                                diffs.Add(gacTest);
+                            }
 
-                    var depTest = DepTest(v2Reader, v3Reader);
-                    if (depTest != null)
-                    {
-                        depTest.Package = file.Name;
-                        diffs.Add(depTest);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                    exceptions.Add(file.Name + "," + ex.ToString());
-                }
-            });
+                            var buildTest = BuildItemsTest(v2Reader, v3Reader);
+                            if (buildTest != null)
+                            {
+                                buildTest.Package = file.Name;
+                                diffs.Add(buildTest);
+                            }
 
-            if (exceptions.Any())
-            {
-                using (StreamWriter writer = new StreamWriter("nupkgparity-crashes.csv", false))
-                {
-                    foreach (string s in exceptions)
-                    {
-                        writer.WriteLine(s);
+                            var contentTest = ContentItemsTest(v2Reader, v3Reader);
+                            if (contentTest != null)
+                            {
+                                contentTest.Package = file.Name;
+                                diffs.Add(contentTest);
+                            }
+
+                            var depTest = DepTest(v2Reader, v3Reader);
+                            if (depTest != null)
+                            {
+                                depTest.Package = file.Name;
+                                diffs.Add(depTest);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                            exceptions.Add(file.Name + "," + ex.ToString());
+                        }
                     }
-                }
+                });
             }
-
-            foreach (var testGroup in diffs.GroupBy(e => e.Test))
+            finally
             {
-                string report = "nupkgparity-" + testGroup.Key + ".csv";
-                Console.WriteLine("Writing: " + report);
-                using (StreamWriter writer = new StreamWriter(report, false))
+                if (exceptions.Any())
                 {
-                    writer.WriteLine("project,v2,v3,count,nupkgs");
-
-                    foreach (var projectGroup in testGroup.GroupBy(e => e.Project + "|" + e.V2Framework + "|" + e.V3Framework).OrderBy(e => e.Key))
+                    using (StreamWriter writer = new StreamWriter("nupkgparity-crashes.csv", false))
                     {
-                        var first = projectGroup.First();
+                        foreach (string s in exceptions)
+                        {
+                            writer.WriteLine(s);
+                        }
+                    }
+                }
 
-                        string s = String.Format("{0},{1},{2},{3},{4}", first.Project, first.V2Framework,
-                                first.V3Framework, projectGroup.Count(), String.Join(" ", projectGroup.Select(e => e.Package).OrderBy(e => e)));
-                        writer.WriteLine(s);
+                foreach (var testGroup in diffs.GroupBy(e => e.Test))
+                {
+                    string report = "nupkgparity-" + testGroup.Key + ".csv";
+                    Console.WriteLine("Writing: " + report);
+                    using (StreamWriter writer = new StreamWriter(report, false))
+                    {
+                        writer.WriteLine("project,v2,v3,count,nupkgs");
+
+                        foreach (var projectGroup in testGroup.GroupBy(e => e.Project + "|" + e.V2Framework + "|" + e.V3Framework).OrderBy(e => e.Key))
+                        {
+                            var first = projectGroup.First();
+
+                            string s = String.Format("{0},{1},{2},{3},{4}", first.Project, first.V2Framework,
+                                    first.V3Framework, projectGroup.Count(), String.Join(" ", projectGroup.Select(e => e.Package).OrderBy(e => e)));
+                            writer.WriteLine(s);
+                        }
                     }
                 }
             }
