@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.22609.0
+VisualStudioVersion = 14.0.22711.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NupkgParity", "NupkgParity\NupkgParity.kproj", "{7F55A072-AFFF-46FA-9BBF-46AC9626CA5F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NupkgParity", "NupkgParity\NupkgParity.xproj", "{7F55A072-AFFF-46FA-9BBF-46AC9626CA5F}"
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "NuGet.Packaging", "..\..\..\NuGet.Packaging\src\NuGet.Packaging\NuGet.Packaging.kproj", "{BD6BBC90-60BE-4E7D-8458-91E9CDA66ABE}"
 EndProject
