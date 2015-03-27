@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "NupkgParityLogger": {
+      "commandName": "NupkgParityLogger",
+      "commandLineArgs": "C:\\gallery 1000"
+    }
+  }
+}
