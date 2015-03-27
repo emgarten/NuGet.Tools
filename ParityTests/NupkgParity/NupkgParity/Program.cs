@@ -35,6 +35,11 @@ namespace NupkgParity
             DirectoryInfo nupkgDir = new DirectoryInfo(args[0]);
             int take = Int32.Parse(args[1]);
 
+            if (take < 1)
+            {
+                take = Int32.MaxValue;
+            }
+
             ConcurrentBag<NupkgDifference> diffs = new ConcurrentBag<NupkgDifference>();
             ConcurrentBag<string> exceptions = new ConcurrentBag<string>();
 

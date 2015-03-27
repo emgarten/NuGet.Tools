@@ -9,9 +9,9 @@
     "DNX,Version=v4.5.1": []
   },
   "libraries": {
-    "Microsoft.CodeAnalysis.Analyzers/1.0.0-rc2-20150323-05": {
+    "Microsoft.CodeAnalysis.Analyzers/1.0.0-rc2-20150325-03": {
       "serviceable": false,
-      "sha": "085lDhDgmVfW9jShJv9o//1+Qxu3Rq6GY9JO/cSaQHmi9+PVtHbHckT5XNWCgMvCpJmqZJONqUAQ+CItgnH2UA==",
+      "sha": "zazOEKMszvdWD/TjtjWhpO1EZt3vYnjJiLeRd3SmXbfYrbQxoYknncH56+ZUt5/g0ZbE3jBlo87n+tW6ZytVJQ==",
       "frameworks": {
         "DNX,Version=v4.5.1": {
           "dependencies": {},
@@ -37,8 +37,8 @@
         }
       },
       "files": [
-        "Microsoft.CodeAnalysis.Analyzers.1.0.0-rc2-20150323-05.nupkg",
-        "Microsoft.CodeAnalysis.Analyzers.1.0.0-rc2-20150323-05.nupkg.sha512",
+        "Microsoft.CodeAnalysis.Analyzers.1.0.0-rc2-20150325-03.nupkg",
+        "Microsoft.CodeAnalysis.Analyzers.1.0.0-rc2-20150325-03.nupkg.sha512",
         "Microsoft.CodeAnalysis.Analyzers.nuspec",
         "ThirdPartyNotices.rtf",
         "tools/install.ps1",
@@ -49,15 +49,15 @@
         "tools/analyzers/VB.NET/Microsoft.CodeAnalysis.VisualBasic.Analyzers.dll"
       ]
     },
-    "Microsoft.CodeAnalysis.Common/1.0.0-rc2-20150323-05": {
+    "Microsoft.CodeAnalysis.Common/1.0.0-rc2-20150325-03": {
       "serviceable": false,
-      "sha": "i1gn4ZDv93iDjoYtaYv0m2MmdP+qKboVOTimjWLduxFHXrB2qI1XkbPGC8wyYrPO6GjPulWe6iqmvVKLnmLi1w==",
+      "sha": "eG/VBVPsOHXyWaxCdoirSfoYdxC5z6LrYijdVAnnV8NCmiO21nN+Adzqdihh7PAkKBRLNBG2k4A06RhtxrI8mQ==",
       "frameworks": {
         "DNX,Version=v4.5.1": {
           "dependencies": {
             "System.Collections.Immutable": "[1.1.33-beta]",
             "System.Reflection.Metadata": "[1.0.18-beta]",
-            "Microsoft.CodeAnalysis.Analyzers": "[1.0.0-rc2-20150323-05]"
+            "Microsoft.CodeAnalysis.Analyzers": "[1.0.0-rc2-20150325-03]"
           },
           "frameworkAssemblies": [],
           "runtimeAssemblies": [
@@ -73,7 +73,7 @@
           "dependencies": {
             "System.Collections.Immutable": "[1.1.33-beta]",
             "System.Reflection.Metadata": "[1.0.18-beta]",
-            "Microsoft.CodeAnalysis.Analyzers": "[1.0.0-rc2-20150323-05]"
+            "Microsoft.CodeAnalysis.Analyzers": "[1.0.0-rc2-20150325-03]"
           },
           "frameworkAssemblies": [],
           "runtimeAssemblies": [
@@ -89,7 +89,7 @@
           "dependencies": {
             "System.Collections.Immutable": "[1.1.33-beta]",
             "System.Reflection.Metadata": "[1.0.18-beta]",
-            "Microsoft.CodeAnalysis.Analyzers": "[1.0.0-rc2-20150323-05]"
+            "Microsoft.CodeAnalysis.Analyzers": "[1.0.0-rc2-20150325-03]"
           },
           "frameworkAssemblies": [],
           "runtimeAssemblies": [
@@ -101,8 +101,8 @@
         }
       },
       "files": [
-        "Microsoft.CodeAnalysis.Common.1.0.0-rc2-20150323-05.nupkg",
-        "Microsoft.CodeAnalysis.Common.1.0.0-rc2-20150323-05.nupkg.sha512",
+        "Microsoft.CodeAnalysis.Common.1.0.0-rc2-20150325-03.nupkg",
+        "Microsoft.CodeAnalysis.Common.1.0.0-rc2-20150325-03.nupkg.sha512",
         "Microsoft.CodeAnalysis.Common.nuspec",
         "ThirdPartyNotices.rtf",
         "lib/net45/Microsoft.CodeAnalysis.Desktop.dll",
@@ -113,13 +113,13 @@
         "lib/portable-net45+win8/Microsoft.CodeAnalysis.xml"
       ]
     },
-    "Microsoft.CodeAnalysis.CSharp/1.0.0-rc2-20150323-05": {
+    "Microsoft.CodeAnalysis.CSharp/1.0.0-rc2-20150325-03": {
       "serviceable": false,
-      "sha": "n47wbEvWOZh1V/Fij0ZA+LssnmV+M2RvCWAq38g85g59U+siOsBRV/5CpKnGzJUz/iYjTxQe7u/VBSjf0VlGjg==",
+      "sha": "qLkypvKmbmrUY4VlZ7T2VhEjDy8YqTSptEnjB5GF1l0jM5bcPJG0lCzQlOtRGhySm+OW1ldh8CKUHAxaNAoRLw==",
       "frameworks": {
         "DNX,Version=v4.5.1": {
           "dependencies": {
-            "Microsoft.CodeAnalysis.Common": "[1.0.0-rc2-20150323-05]"
+            "Microsoft.CodeAnalysis.Common": "[1.0.0-rc2-20150325-03]"
           },
           "frameworkAssemblies": [],
           "runtimeAssemblies": [
@@ -133,7 +133,7 @@
         },
         ".NETFramework,Version=v4.5": {
           "dependencies": {
-            "Microsoft.CodeAnalysis.Common": "[1.0.0-rc2-20150323-05]"
+            "Microsoft.CodeAnalysis.Common": "[1.0.0-rc2-20150325-03]"
           },
           "frameworkAssemblies": [],
           "runtimeAssemblies": [
@@ -147,7 +147,7 @@
         },
         "DNXCore,Version=v5.0": {
           "dependencies": {
-            "Microsoft.CodeAnalysis.Common": "[1.0.0-rc2-20150323-05]"
+            "Microsoft.CodeAnalysis.Common": "[1.0.0-rc2-20150325-03]"
           },
           "frameworkAssemblies": [],
           "runtimeAssemblies": [
@@ -159,8 +159,8 @@
         }
       },
       "files": [
-        "Microsoft.CodeAnalysis.CSharp.1.0.0-rc2-20150323-05.nupkg",
-        "Microsoft.CodeAnalysis.CSharp.1.0.0-rc2-20150323-05.nupkg.sha512",
+        "Microsoft.CodeAnalysis.CSharp.1.0.0-rc2-20150325-03.nupkg",
+        "Microsoft.CodeAnalysis.CSharp.1.0.0-rc2-20150325-03.nupkg.sha512",
         "Microsoft.CodeAnalysis.CSharp.nuspec",
         "ThirdPartyNotices.rtf",
         "lib/net45/Microsoft.CodeAnalysis.CSharp.Desktop.dll",
@@ -171,9 +171,9 @@
         "lib/portable-net45+win8/Microsoft.CodeAnalysis.CSharp.xml"
       ]
     },
-    "Microsoft.Framework.Runtime.Interfaces/1.0.0-beta4-11351": {
+    "Microsoft.Framework.Runtime.Interfaces/1.0.0-beta5-11380": {
       "serviceable": false,
-      "sha": "5/pIE6djY1XWN3zGfj0Pl1V+LKSmZo0tRq2CK6wTPljdBVz8UGogtfDf10lG1USpLpEA3UVileljuGk9ZcHzAg==",
+      "sha": "ajgmfYqqSFJKWcxAs3ymgW0xfXikVovopojGliVUHMjCwVvec/rM6dZtF/qzgEZ+toP8T+UAKBkkFq7LGkAlwQ==",
       "frameworks": {
         "DNX,Version=v4.5.1": {
           "dependencies": {},
@@ -198,12 +198,12 @@
         },
         "DNXCore,Version=v5.0": {
           "dependencies": {
-            "System.IO": "4.0.10-beta-22720",
-            "System.Reflection": "4.0.10-beta-22720",
-            "System.Runtime": "4.0.20-beta-22720",
-            "System.Runtime.Extensions": "4.0.10-beta-22720",
-            "System.Threading.Tasks": "4.0.10-beta-22720",
-            "System.ComponentModel": "4.0.0-beta-22720"
+            "System.IO": "4.0.10-beta-22725",
+            "System.Reflection": "4.0.10-beta-22725",
+            "System.Runtime": "4.0.20-beta-22725",
+            "System.Runtime.Extensions": "4.0.10-beta-22725",
+            "System.Threading.Tasks": "4.0.10-beta-22725",
+            "System.ComponentModel": "4.0.0-beta-22725"
           },
           "frameworkAssemblies": [],
           "runtimeAssemblies": [
@@ -215,8 +215,8 @@
         }
       },
       "files": [
-        "Microsoft.Framework.Runtime.Interfaces.1.0.0-beta4-11351.nupkg",
-        "Microsoft.Framework.Runtime.Interfaces.1.0.0-beta4-11351.nupkg.sha512",
+        "Microsoft.Framework.Runtime.Interfaces.1.0.0-beta5-11380.nupkg",
+        "Microsoft.Framework.Runtime.Interfaces.1.0.0-beta5-11380.nupkg.sha512",
         "Microsoft.Framework.Runtime.Interfaces.nuspec",
         "lib/dnx451/Microsoft.Framework.Runtime.Interfaces.dll",
         "lib/dnx451/Microsoft.Framework.Runtime.Interfaces.xml",
@@ -224,14 +224,14 @@
         "lib/dnxcore50/Microsoft.Framework.Runtime.Interfaces.xml"
       ]
     },
-    "Microsoft.Framework.Runtime.Roslyn.Interfaces/1.0.0-beta4-11351": {
+    "Microsoft.Framework.Runtime.Roslyn.Interfaces/1.0.0-beta5-11380": {
       "serviceable": false,
-      "sha": "dbHBxf+2i3zL+0SW1nf7nI7zvO8B8hQGtLau6zfGPV0c5qKwFttKkj5t3Sxk2gd47iQ5cNHZxGFGszCWfFshFg==",
+      "sha": "lGuJdBYmlLsyF/59nZP/IaX1vkjkQ6Np9FZBMK11O/zZs02yAuPX0zNzswRZgYCwZhpcwo/O4yZfUHB3ZfdKvg==",
       "frameworks": {
         "DNX,Version=v4.5.1": {
           "dependencies": {
-            "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta4-11351",
-            "Microsoft.CodeAnalysis.CSharp": "1.0.0-rc2-20150323-05"
+            "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta5-11380",
+            "Microsoft.CodeAnalysis.CSharp": "1.0.0-rc2-20150325-03"
           },
           "frameworkAssemblies": [
             "mscorlib",
@@ -254,9 +254,9 @@
         },
         "DNXCore,Version=v5.0": {
           "dependencies": {
-            "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta4-11351",
-            "Microsoft.CodeAnalysis.CSharp": "1.0.0-rc2-20150323-05",
-            "System.Runtime": "4.0.20-beta-22720"
+            "Microsoft.Framework.Runtime.Interfaces": "1.0.0-beta5-11380",
+            "Microsoft.CodeAnalysis.CSharp": "1.0.0-rc2-20150325-03",
+            "System.Runtime": "4.0.20-beta-22725"
           },
           "frameworkAssemblies": [],
           "runtimeAssemblies": [
@@ -268,8 +268,8 @@
         }
       },
       "files": [
-        "Microsoft.Framework.Runtime.Roslyn.Interfaces.1.0.0-beta4-11351.nupkg",
-        "Microsoft.Framework.Runtime.Roslyn.Interfaces.1.0.0-beta4-11351.nupkg.sha512",
+        "Microsoft.Framework.Runtime.Roslyn.Interfaces.1.0.0-beta5-11380.nupkg",
+        "Microsoft.Framework.Runtime.Roslyn.Interfaces.1.0.0-beta5-11380.nupkg.sha512",
         "Microsoft.Framework.Runtime.Roslyn.Interfaces.nuspec",
         "lib/dnx451/Microsoft.Framework.Runtime.Roslyn.Interfaces.dll",
         "lib/dnx451/Microsoft.Framework.Runtime.Roslyn.Interfaces.xml",
@@ -413,234 +413,6 @@
         "Nuget.Core.2.8.3.nupkg.sha512",
         "Nuget.Core.nuspec",
         "lib/net40-Client/NuGet.Core.dll"
-      ]
-    },
-    "NuGet.Frameworks/3.0.0": {
-      "serviceable": false,
-      "sha": "KrRDu+7LMNij+ppZDOxhHZnigAPQ8MdA4jwFuo9mZ/8sBpz5hghF7MgENcFQyaxU6nrYVr4xQHdv3Mf9YGBQew==",
-      "frameworks": {
-        "DNX,Version=v4.5.1": {
-          "dependencies": {
-            "NuGet.Versioning": "3.0.0-beta4-10027"
-          },
-          "frameworkAssemblies": [
-            "mscorlib",
-            "System",
-            "System.Core",
-            "Microsoft.CSharp"
-          ],
-          "runtimeAssemblies": [
-            "lib/net45/NuGet.Frameworks.dll"
-          ],
-          "compileAssemblies": [
-            "lib/net45/NuGet.Frameworks.dll"
-          ]
-        },
-        ".NETFramework,Version=v4.5": {
-          "dependencies": {
-            "NuGet.Versioning": "3.0.0-beta4-10027"
-          },
-          "frameworkAssemblies": [
-            "mscorlib",
-            "System",
-            "System.Core",
-            "Microsoft.CSharp"
-          ],
-          "runtimeAssemblies": [
-            "lib/net45/NuGet.Frameworks.dll"
-          ],
-          "compileAssemblies": [
-            "lib/net45/NuGet.Frameworks.dll"
-          ]
-        },
-        "DNXCore,Version=v5.0": {
-          "dependencies": {},
-          "frameworkAssemblies": [],
-          "runtimeAssemblies": [],
-          "compileAssemblies": []
-        }
-      },
-      "files": [
-        "NuGet.Frameworks.3.0.0.nupkg",
-        "NuGet.Frameworks.3.0.0.nupkg.sha512",
-        "NuGet.Frameworks.nuspec",
-        "lib/net45/NuGet.Frameworks.dll",
-        "lib/net45/NuGet.Frameworks.xml"
-      ]
-    },
-    "NuGet.Packaging/3.0.0": {
-      "serviceable": false,
-      "sha": "UPqbKnC45pufZn1ykwdt9/du6uuF13BeIVIvOMREgRc3Qw2nRhh3vBtVYXJGVdPgKaYmld9wGFCtDXFPwwi3+w==",
-      "frameworks": {
-        "DNX,Version=v4.5.1": {
-          "dependencies": {
-            "NuGet.Packaging.Core": "3.0.0",
-            "NuGet.Frameworks": "3.0.0"
-          },
-          "frameworkAssemblies": [
-            "System.Xml",
-            "System.Xml.Linq",
-            "System.IO.Compression",
-            "mscorlib",
-            "System",
-            "System.Core",
-            "Microsoft.CSharp"
-          ],
-          "runtimeAssemblies": [
-            "lib/net45/NuGet.Packaging.dll"
-          ],
-          "compileAssemblies": [
-            "lib/net45/NuGet.Packaging.dll"
-          ]
-        },
-        ".NETFramework,Version=v4.5": {
-          "dependencies": {
-            "NuGet.Packaging.Core": "3.0.0",
-            "NuGet.Frameworks": "3.0.0"
-          },
-          "frameworkAssemblies": [
-            "System.Xml",
-            "System.Xml.Linq",
-            "System.IO.Compression",
-            "mscorlib",
-            "System",
-            "System.Core",
-            "Microsoft.CSharp"
-          ],
-          "runtimeAssemblies": [
-            "lib/net45/NuGet.Packaging.dll"
-          ],
-          "compileAssemblies": [
-            "lib/net45/NuGet.Packaging.dll"
-          ]
-        },
-        "DNXCore,Version=v5.0": {
-          "dependencies": {},
-          "frameworkAssemblies": [],
-          "runtimeAssemblies": [],
-          "compileAssemblies": []
-        }
-      },
-      "files": [
-        "NuGet.Packaging.3.0.0.nupkg",
-        "NuGet.Packaging.3.0.0.nupkg.sha512",
-        "NuGet.Packaging.nuspec",
-        "lib/net45/NuGet.Packaging.dll",
-        "lib/net45/NuGet.Packaging.xml"
-      ]
-    },
-    "NuGet.Packaging.Core/3.0.0": {
-      "serviceable": false,
-      "sha": "DzRDhTaSJxwExedZRSZdwcPPKkp7XB0adtArnfDkyqeGofikoeEcME8iIvATaEDhXMa+XL7AM1wsovMxD+1JdQ==",
-      "frameworks": {
-        "DNX,Version=v4.5.1": {
-          "dependencies": {
-            "NuGet.Versioning": "3.0.0-beta4-10027",
-            "NuGet.Packaging.Core.Types": "3.0.0"
-          },
-          "frameworkAssemblies": [
-            "System.Xml",
-            "System.Xml.Linq",
-            "System.IO.Compression",
-            "mscorlib",
-            "System",
-            "System.Core",
-            "Microsoft.CSharp"
-          ],
-          "runtimeAssemblies": [
-            "lib/net45/NuGet.Packaging.Core.dll"
-          ],
-          "compileAssemblies": [
-            "lib/net45/NuGet.Packaging.Core.dll"
-          ]
-        },
-        ".NETFramework,Version=v4.5": {
-          "dependencies": {
-            "NuGet.Versioning": "3.0.0-beta4-10027",
-            "NuGet.Packaging.Core.Types": "3.0.0"
-          },
-          "frameworkAssemblies": [
-            "System.Xml",
-            "System.Xml.Linq",
-            "System.IO.Compression",
-            "mscorlib",
-            "System",
-            "System.Core",
-            "Microsoft.CSharp"
-          ],
-          "runtimeAssemblies": [
-            "lib/net45/NuGet.Packaging.Core.dll"
-          ],
-          "compileAssemblies": [
-            "lib/net45/NuGet.Packaging.Core.dll"
-          ]
-        },
-        "DNXCore,Version=v5.0": {
-          "dependencies": {},
-          "frameworkAssemblies": [],
-          "runtimeAssemblies": [],
-          "compileAssemblies": []
-        }
-      },
-      "files": [
-        "NuGet.Packaging.Core.3.0.0.nupkg",
-        "NuGet.Packaging.Core.3.0.0.nupkg.sha512",
-        "NuGet.Packaging.Core.nuspec",
-        "lib/net45/NuGet.Packaging.Core.dll",
-        "lib/net45/NuGet.Packaging.Core.xml"
-      ]
-    },
-    "NuGet.Packaging.Core.Types/3.0.0": {
-      "serviceable": false,
-      "sha": "yoEBdNgUNNXb+RzQ12jaVU9YB6dfZqj9Rr1pfPYwAvI2q72JxWtoh5mA+uvsRKsOz06LFu9ozBIxqXXY5jwR+Q==",
-      "frameworks": {
-        "DNX,Version=v4.5.1": {
-          "dependencies": {
-            "NuGet.Frameworks": "3.0.0"
-          },
-          "frameworkAssemblies": [
-            "mscorlib",
-            "System",
-            "System.Core",
-            "Microsoft.CSharp"
-          ],
-          "runtimeAssemblies": [
-            "lib/net45/NuGet.Packaging.Core.Types.dll"
-          ],
-          "compileAssemblies": [
-            "lib/net45/NuGet.Packaging.Core.Types.dll"
-          ]
-        },
-        ".NETFramework,Version=v4.5": {
-          "dependencies": {
-            "NuGet.Frameworks": "3.0.0"
-          },
-          "frameworkAssemblies": [
-            "mscorlib",
-            "System",
-            "System.Core",
-            "Microsoft.CSharp"
-          ],
-          "runtimeAssemblies": [
-            "lib/net45/NuGet.Packaging.Core.Types.dll"
-          ],
-          "compileAssemblies": [
-            "lib/net45/NuGet.Packaging.Core.Types.dll"
-          ]
-        },
-        "DNXCore,Version=v5.0": {
-          "dependencies": {},
-          "frameworkAssemblies": [],
-          "runtimeAssemblies": [],
-          "compileAssemblies": []
-        }
-      },
-      "files": [
-        "NuGet.Packaging.Core.Types.3.0.0.nupkg",
-        "NuGet.Packaging.Core.Types.3.0.0.nupkg.sha512",
-        "NuGet.Packaging.Core.Types.nuspec",
-        "lib/net45/NuGet.Packaging.Core.Types.dll",
-        "lib/net45/NuGet.Packaging.Core.Types.xml"
       ]
     },
     "System.Collections.Immutable/1.1.33-beta": {

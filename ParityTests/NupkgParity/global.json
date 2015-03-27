@@ -2,6 +2,6 @@
     "sources": [ 
 		"src", 
 		"../../../NuGet.Versioning/src",
-		"../../../../NuGet.Packaging/src"
+		"../../../NuGet.Packaging/src"
 	]
 }

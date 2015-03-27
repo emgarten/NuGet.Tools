@@ -2,7 +2,7 @@
   "profiles": {
     "NupkgParityLogger": {
       "commandName": "NupkgParityLogger",
-      "commandLineArgs": "C:\\gallery 1000"
+      "commandLineArgs": "C:\\gallery 0"
     }
   }
 }
