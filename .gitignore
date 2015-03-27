@@ -6,6 +6,8 @@
 
 nupkgs/
 
+**/*.lock.json
+
 # User-specific files
 *.suo
 *.user
