@@ -410,10 +410,10 @@ namespace NupkgParityLogger
             "wpa81",
             //"aspnetcore50",
             //"aspnet50",
-            "portable-net45+win8",
-            "portable-net4+sl4+wp71+win8",
-            "portable-net4+sl4+wp71+win8+monoandroid+monotouch",
-            "",
+            //"portable-net45+win8",
+            //"portable-net4+sl4+wp71+win8",
+            //"portable-net4+sl4+wp71+win8+monoandroid+monotouch",
+            //"",
         };
     }
 }
