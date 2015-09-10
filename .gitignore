@@ -25,6 +25,9 @@ x64/
 !packages/*/build/
 !*/packages/*/build/
 
+**/.vs/
+
+
 # NuGet Packages Directory
 /packages/
 **/packages/

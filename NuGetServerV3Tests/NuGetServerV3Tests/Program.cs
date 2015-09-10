@@ -78,16 +78,178 @@ namespace NuGetServerV3Tests
 
             var repo = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
 
-            ReportResolverIssues(packages, repo).Wait();
+            ReportParityIssues(packages, repo).Wait();
+            //ReportResolverIssues(packages, repo).Wait();
+            //ReportFlatContainerIssues(packages, repo).Wait();
 
             Console.WriteLine("done");
             Console.ReadKey();
         }
 
+        private static async Task ReportFlatContainerIssues(List<PackageIdentity> packages, SourceRepository repo)
+        {
+            var lockObj = new object();
+            try
+            {
+                Console.WriteLine("flat container");
+
+                var index = new Dictionary<string, SortedSet<NuGetVersion>>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var package in packages)
+                {
+                    if (!index.ContainsKey(package.Id))
+                    {
+                        index.Add(package.Id, new SortedSet<NuGetVersion>());
+                    }
+
+                    index[package.Id].Add(package.Version);
+                }
+
+                ParallelOptions options = new ParallelOptions();
+                options.MaxDegreeOfParallelism = 16;
+
+                Parallel.ForEach(index.Keys, options, packageId =>
+                {
+                    Console.WriteLine(packageId);
+
+                    try
+                    {
+                        var catalogVersions = index[packageId];
+
+                        var findResource = repo.GetResource<FindPackageByIdResource>();
+                        findResource.CacheContext = new SourceCacheContext()
+                        {
+                            NoCache = false
+                        };
+
+                        findResource.Logger = NuGet.Logging.NullLogger.Instance;
+
+                        var findAllVersions = findResource.GetAllVersionsAsync(packageId, CancellationToken.None).Result;
+
+                        foreach (var version in findAllVersions.Except(catalogVersions))
+                        {
+                            Write("only-in-flat", string.Format("Package {0} Version: {1}", packageId, version.ToNormalizedString()));
+                        }
+
+                        foreach (var version in catalogVersions.Except(findAllVersions))
+                        {
+                            Write("missing-from-flat", string.Format("Package {0} Version: {1}", packageId, version.ToNormalizedString()));
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Write("errors", string.Format("All versions - Package {0} Exception {1}", packageId, ex));
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Write("errors", string.Format("Exception {0}", ex));
+            }
+        }
+
+        private static async Task ReportParityIssues(List<PackageIdentity> packages, SourceRepository repo)
+        {
+            var lockObj = new object();
+            try
+            {
+                Console.WriteLine("Running parity test");
+
+                var index = new Dictionary<string, SortedSet<NuGetVersion>>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var package in packages)
+                {
+                    if (!index.ContainsKey(package.Id))
+                    {
+                        index.Add(package.Id, new SortedSet<NuGetVersion>());
+                    }
+
+                    index[package.Id].Add(package.Version);
+                }
+
+                ParallelOptions options = new ParallelOptions();
+                options.MaxDegreeOfParallelism = 16;
+
+                Parallel.ForEach(index.Keys, options, packageId =>
+                {
+                    Console.WriteLine(packageId);
+
+                    try
+                    {
+                        var catalogVersions = index[packageId];
+
+                        var dependencyResource = repo.GetResource<DependencyInfoResource>();
+                        var findResource = repo.GetResource<FindPackageByIdResource>();
+                        findResource.CacheContext = new SourceCacheContext()
+                        {
+                            NoCache = true
+                        };
+
+                        findResource.Logger = NuGet.Logging.NullLogger.Instance;
+
+                        var packageInfos = dependencyResource.ResolvePackages(packageId, CancellationToken.None).Result;
+                        var packageInfoVersions = packageInfos.Select(v => v.Identity.Version).ToList();
+
+                        foreach (var version in index[packageId])
+                        {
+                            if (!packageInfoVersions.Contains(version))
+                            {
+                                Console.WriteLine("Skipping: " + packageId + " " + version.ToNormalizedString());
+                                continue;
+                            }
+
+                            var package = new PackageIdentity(packageId, version);
+
+                            try
+                            {
+                                var packageInfo = packageInfos.Single(group => group.Identity.Equals(package));
+                                var groupCount = packageInfo.DependencyGroups.SelectMany(e => e.Packages).Count();
+
+                                var findInfo = findResource.GetDependencyInfoAsync(package.Id, package.Version, CancellationToken.None).Result;
+
+                                var findCount = findInfo.DependencyGroups.SelectMany(e => e.Packages).Count();
+
+                                if (groupCount != findCount)
+                                {
+                                    Write("dependency-group-diff", string.Format("Package {0} Counts {1}/{2} ", package, groupCount, findCount));
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Write("errors", string.Format("Package {0} Exception {1}", package, ex));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Write("errors", string.Format("All versions - Package {0} Exception {1}", packageId, ex));
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Write("errors", string.Format("Exception {0}", ex));
+            }
+        }
+
+        private static object _lockObj = new Object();
+        private static void Write(string log, string message)
+        {
+            lock (_lockObj)
+            {
+                using (var writer = new StreamWriter(log + ".txt", true))
+                {
+                    writer.WriteLine(message);
+                }
+            }
+        }
+
         private static async Task ReportResolverIssues(List<PackageIdentity> packages, SourceRepository repo)
         {
             var lockObj = new object();
-            using (var writer = new StreamWriter("resolvertest.txt", false))
+            using (var missingWriter = new StreamWriter("resolver-missing.txt", false))
+            using (var errorWriter = new StreamWriter("resolver-errors.txt", false))
+            using (var writer = new StreamWriter("resolver-test.txt", false))
             {
                 try
                 {
@@ -108,67 +270,88 @@ namespace NuGetServerV3Tests
                     ParallelOptions options = new ParallelOptions();
                     options.MaxDegreeOfParallelism = 32;
 
-                    Parallel.ForEach(packages, options, package =>
+                    Parallel.ForEach(index.Keys, options, packageId =>
                     {
-                        Console.WriteLine(package);
-
-                        var dependencyResource = repo.GetResource<DependencyInfoResource>();
-
-                        // Get the latest version only
-                        // var package = new PackageIdentity(packageId, index[packageId].OrderByDescending(v => v).First());
+                        Console.WriteLine(packageId + " Versions: " + index[packageId].Count);
 
                         try
                         {
-                            var groups = dependencyResource.ResolvePackages(package.Id, CancellationToken.None).Result;
+                            var dependencyResource = repo.GetResource<DependencyInfoResource>();
+                            var groups = dependencyResource.ResolvePackages(packageId, CancellationToken.None).Result;
 
-                            var packageInfo = groups.FirstOrDefault(group => group.Identity.Equals(package));
-
-                            foreach (var group in packageInfo.DependencyGroups)
+                            foreach (var version in index[packageId])
                             {
-                                foreach (var depPackage in group.Packages)
+                                var package = new PackageIdentity(packageId, version);
+
+                                try
                                 {
-                                    if (depPackage.VersionRange != null
-                                        && depPackage.VersionRange.IsMinInclusive
-                                        && depPackage.VersionRange.HasLowerBound
-                                        && depPackage.VersionRange.MinVersion.IsPrerelease
-                                        && depPackage.VersionRange.MinVersion.Major > 0)
+                                    var packageInfos = groups.Where(group => group.Identity.Equals(package));
+
+                                    if (packageInfos.Count() != 1)
                                     {
-                                        SortedSet<NuGetVersion> candidates;
-                                        if (index.TryGetValue(depPackage.Id, out candidates))
+                                        missingWriter.WriteLine(package.Id.ToLowerInvariant() + "," + package.Version.ToNormalizedString().ToLowerInvariant());
+                                        missingWriter.Flush();
+                                        continue;
+                                    }
+
+                                    var packageInfo = packageInfos.Single();
+
+                                    foreach (var group in packageInfo.DependencyGroups)
+                                    {
+                                        foreach (var depPackage in group.Packages)
                                         {
-                                            var original = candidates
-                                                .Where(v => depPackage.VersionRange.Satisfies(v))
-                                                .OrderBy(v => v, VersionComparer.Default)
-                                                .FirstOrDefault();
-
-                                            if (original != null
-                                                && original.IsPrerelease
-                                                && !VersionComparer.Version.Equals(
-                                                    depPackage.VersionRange.MinVersion,
-                                                    original))
+                                            if (depPackage.VersionRange != null
+                                                && depPackage.VersionRange.IsMinInclusive
+                                                && depPackage.VersionRange.HasLowerBound
+                                                && depPackage.VersionRange.MinVersion.IsPrerelease
+                                                && depPackage.VersionRange.MinVersion.Major > 0)
                                             {
-                                                var next = candidates
-                                                    .Where(v => !v.IsPrerelease && depPackage.VersionRange.Satisfies(v))
-                                                    .OrderBy(v => v, VersionComparer.Default)
-                                                    .FirstOrDefault()?.ToNormalizedString() ?? "NONE";
-
-                                                string message = string.Format("Package: {0} Dependency group TxM: {1} Dependency: {2} Lowest available match: {3} Next stable: {4}",
-                                                        package,
-                                                        group.TargetFramework.GetShortFolderName(),
-                                                        depPackage,
-                                                        original,
-                                                        next);
-
-                                                lock (lockObj)
+                                                SortedSet<NuGetVersion> candidates;
+                                                if (index.TryGetValue(depPackage.Id, out candidates))
                                                 {
-                                                    Console.WriteLine(message);
+                                                    var original = candidates
+                                                        .Where(v => depPackage.VersionRange.Satisfies(v))
+                                                        .OrderBy(v => v, VersionComparer.Default)
+                                                        .FirstOrDefault();
 
-                                                    writer.WriteLine(message);
+                                                    if (original != null
+                                                        && original.IsPrerelease
+                                                        && !VersionComparer.Version.Equals(
+                                                            depPackage.VersionRange.MinVersion,
+                                                            original))
+                                                    {
+                                                        var next = candidates
+                                                            .Where(v => !v.IsPrerelease && depPackage.VersionRange.Satisfies(v))
+                                                            .OrderBy(v => v, VersionComparer.Default)
+                                                            .FirstOrDefault()?.ToNormalizedString() ?? "NONE";
 
-                                                    writer.Flush();
+                                                        string message = string.Format("Package: {0} Dependency group TxM: {1} Dependency: {2} Lowest available match: {3} Next stable: {4}",
+                                                                package,
+                                                                group.TargetFramework.GetShortFolderName(),
+                                                                depPackage,
+                                                                original,
+                                                                next);
+
+                                                        lock (lockObj)
+                                                        {
+                                                            Console.WriteLine(message);
+
+                                                            writer.WriteLine(message);
+
+                                                            writer.Flush();
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    lock (lockObj)
+                                    {
+                                        errorWriter.WriteLine("Package {0} Exception {1}", package, ex);
+                                        errorWriter.Flush();
                                     }
                                 }
                             }
@@ -177,7 +360,8 @@ namespace NuGetServerV3Tests
                         {
                             lock (lockObj)
                             {
-                                writer.WriteLine("Package {0} Exception {1}", package.Id, ex);
+                                errorWriter.WriteLine("All failed - Package {0} Exception {1}", packageId, ex);
+                                errorWriter.Flush();
                             }
                         }
                     });
@@ -186,7 +370,8 @@ namespace NuGetServerV3Tests
                 {
                     lock (lockObj)
                     {
-                        writer.WriteLine("Exception {0}", ex);
+                        errorWriter.WriteLine("Exception {0}", ex);
+                        errorWriter.Flush();
                     }
                 }
             }
