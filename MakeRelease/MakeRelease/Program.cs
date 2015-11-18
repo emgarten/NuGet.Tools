@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using NuGet.Versioning;
+using NuGet.ProjectModel;
 
 namespace MakeRelease
 {
@@ -19,6 +20,8 @@ namespace MakeRelease
                 return;
             }
 
+            var format = new LockFileFormat();
+
             var dir = new DirectoryInfo(args[0]);
 
             if (dir.Exists)
@@ -27,30 +30,41 @@ namespace MakeRelease
                 {
                     Console.WriteLine(file.FullName);
 
-                    JObject json = null;
+                    var lockFilePath = Path.Combine(file.DirectoryName, "project.lock.json");
 
-                    bool changes = false;
-
-                    using (var reader = file.OpenText())
+                    if (File.Exists(lockFilePath))
                     {
-                        json = JObject.Parse(reader.ReadToEnd());
+                        var lockFile = format.Read(lockFilePath);
 
-                        foreach (var node in json.Descendants())
+                        JObject json = null;
+                        bool changes = false;
+
+                        using (var reader = file.OpenText())
                         {
-                            if (node.Parent.Type == JTokenType.Property)
+                            json = JObject.Parse(reader.ReadToEnd());
+
+                            foreach (var node in json.Descendants())
                             {
-                                changes |= RemovePreleaseLabel(node);
+                                //if (node.Parent.Type == JTokenType.Property)
+                                //{
+                                //    changes |= RemovePreleaseLabel(node);
+                                //}
+
+                                if (node.Type == JTokenType.Property)
+                                {
+                                    changes |= ReplaceWithLockFileVersion((JProperty)node, lockFile);
+                                }
                             }
                         }
-                    }
 
-                    if (changes)
-                    {
-                        file.Delete();
-
-                        using (var writer = new StreamWriter(file.OpenWrite(), Encoding.UTF8))
+                        if (changes)
                         {
-                            writer.Write(json.ToString());
+                            file.Delete();
+
+                            using (var writer = new StreamWriter(file.OpenWrite(), Encoding.UTF8))
+                            {
+                                writer.Write(json.ToString());
+                            }
                         }
                     }
                 }
@@ -84,6 +98,35 @@ namespace MakeRelease
             catch
             {
 
+            }
+
+            return false;
+        }
+
+        static bool ReplaceWithLockFileVersion(JProperty dependencyEntry, LockFile lockFile)
+        {
+            if (dependencyEntry.Value.Type == JTokenType.String && dependencyEntry.Name != "version")
+            {
+                var version = dependencyEntry.Value.ToString();
+
+                if (version.EndsWith("*") && !dependencyEntry.Name.StartsWith("NuGet", StringComparison.OrdinalIgnoreCase))
+                {
+                    var lib = lockFile.Libraries.SingleOrDefault(package =>
+                        package.Name.Equals(
+                            dependencyEntry.Name,
+                            StringComparison.OrdinalIgnoreCase));
+
+                    if (lib == null)
+                    {
+                        Console.WriteLine("Missing: " + dependencyEntry.Name);
+                    }
+                    else
+                    {
+                        dependencyEntry.Value = new JRaw("\"" + lib.Version.ToNormalizedString() + "\"");
+                    }
+
+                    return true;
+                }
             }
 
             return false;
