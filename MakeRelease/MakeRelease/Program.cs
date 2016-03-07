@@ -32,41 +32,41 @@ namespace MakeRelease
 
                     var lockFilePath = Path.Combine(file.DirectoryName, "project.lock.json");
 
-                    if (File.Exists(lockFilePath))
+                    //if (File.Exists(lockFilePath))
+                    //{
+                    // var lockFile = format.Read(lockFilePath);
+
+                    JObject json = null;
+                    bool changes = false;
+
+                    using (var reader = file.OpenText())
                     {
-                        var lockFile = format.Read(lockFilePath);
+                        json = JObject.Parse(reader.ReadToEnd());
 
-                        JObject json = null;
-                        bool changes = false;
-
-                        using (var reader = file.OpenText())
+                        foreach (var node in json.Descendants())
                         {
-                            json = JObject.Parse(reader.ReadToEnd());
-
-                            foreach (var node in json.Descendants())
+                            if (node.Parent.Type == JTokenType.Property)
                             {
-                                //if (node.Parent.Type == JTokenType.Property)
-                                //{
-                                //    changes |= RemovePreleaseLabel(node);
-                                //}
-
-                                if (node.Type == JTokenType.Property)
-                                {
-                                    changes |= ReplaceWithLockFileVersion((JProperty)node, lockFile);
-                                }
+                                changes |= RemovePreleaseLabel(node);
                             }
-                        }
 
-                        if (changes)
-                        {
-                            file.Delete();
-
-                            using (var writer = new StreamWriter(file.OpenWrite(), Encoding.UTF8))
-                            {
-                                writer.Write(json.ToString());
-                            }
+                            //if (node.Type == JTokenType.Property)
+                            //{
+                            //    changes |= ReplaceWithLockFileVersion((JProperty)node, lockFile);
+                            //}
                         }
                     }
+
+                    if (changes)
+                    {
+                        file.Delete();
+
+                        using (var writer = new StreamWriter(file.OpenWrite(), Encoding.UTF8))
+                        {
+                            writer.Write(json.ToString());
+                        }
+                    }
+                    //}
                 }
             }
         }
@@ -83,11 +83,10 @@ namespace MakeRelease
 
                     var range = VersionRange.Parse(version);
 
-                    if (range.IsFloating && ((range.Float.MinVersion.Major == 3 && range.Float.MinVersion.Minor == 2)
-                        || (range.Float.MinVersion.Major == 2 && range.Float.MinVersion.Minor == 8
-                        && range.Float.MinVersion.Patch == 8)))
+                    if (range.IsFloating && ((range.Float.MinVersion.Major == 3 && range.Float.MinVersion.Minor == 4
+                        && range.Float.MinVersion.Patch == 0)))
                     {
-                        value.Value = version.Split('-').First();
+                        value.Value = version.Split('-').First() + "-rtm-*";
 
                         Console.WriteLine("{0} -> {1}", version, value.ToString());
 
