@@ -23,34 +23,41 @@ namespace NuGetVSTemplateFix
 
             DirectoryInfo dir = new DirectoryInfo(args[0]);
 
-            foreach(var file in dir.GetFiles("*.vstemplate", SearchOption.AllDirectories))
+            foreach(var file in dir.EnumerateFiles("*.vstemplate", SearchOption.AllDirectories))
             {
-                XDocument xml = null;
-                bool save = false;
-
-                using (var stream = file.OpenRead())
+                try
                 {
-                    xml = XDocument.Load(stream);
+                    XDocument xml = null;
+                    bool save = false;
 
-                    var ns = xml.Descendants().FirstOrDefault().GetDefaultNamespace().NamespaceName;
-
-                    var node = xml.Descendants(XName.Get("VSTemplate", ns)).Descendants(XName.Get("WizardExtension", ns)).Descendants(XName.Get("Assembly", ns)).FirstOrDefault();
-
-                    if (node != null)
+                    using (var stream = file.OpenRead())
                     {
-                        if (node.Value == find)
-                        {
-                            node.SetValue(replace);
-                            save = true;
+                        xml = XDocument.Load(stream);
 
-                            Console.WriteLine("Updating: " + file.FullName);
+                        var ns = xml.Descendants().FirstOrDefault().GetDefaultNamespace().NamespaceName;
+
+                        var node = xml.Descendants(XName.Get("VSTemplate", ns)).Descendants(XName.Get("WizardExtension", ns)).Descendants(XName.Get("Assembly", ns)).FirstOrDefault();
+
+                        if (node != null)
+                        {
+                            if (node.Value == find)
+                            {
+                                node.SetValue(replace);
+                                save = true;
+
+                                Console.WriteLine("Updating: " + file.FullName);
+                            }
                         }
                     }
-                }
 
-                if (save)
+                    if (save)
+                    {
+                        xml.Save(file.FullName);
+                    }
+                }
+                catch
                 {
-                    xml.Save(file.FullName);
+                    // Ignore exceptions
                 }
             }
         }
