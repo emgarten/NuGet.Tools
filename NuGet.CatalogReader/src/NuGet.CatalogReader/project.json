@@ -1,5 +1,18 @@
 ﻿{
-  "version": "1.0.0-rc-*",
+  "version": "1.0.0",
+
+  "description": "A NuGet catalog reader for discovering all packages on a v3 feed.",
+
+  "packOptions": {
+    "tags": [
+      "nuget",
+      "catalog",
+      "v3"
+    ],
+    "authors": [
+      "juste"
+    ]
+  },
 
   "buildOptions": {
     "warningsAsErrors": true,
@@ -12,9 +25,14 @@
   },
 
   "frameworks": {
-    "netstandard1.6": {
+    "netstandard1.3": {
       "dependencies": {
         "NETStandard.Library": "1.6.0"
+      }
+    },
+    "net45": {
+      "frameworkAssemblies": {
+        "System.Net.Http": "4.0.0.0"
       }
     }
   }

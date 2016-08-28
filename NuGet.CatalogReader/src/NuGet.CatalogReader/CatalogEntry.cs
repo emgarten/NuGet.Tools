@@ -71,7 +71,7 @@ namespace NuGet.CatalogReader
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            return string.Format(CultureInfo.InvariantCulture, "{0}.{1}", Id.ToLowerInvariant(), Version.ToNormalizedString().ToLowerInvariant()).GetHashCode();
+            return string.Format(CultureInfo.InvariantCulture, "{0}/{1}", Id.ToLowerInvariant(), Version.ToNormalizedString().ToLowerInvariant()).GetHashCode();
         }
 
         /// <summary>
@@ -102,6 +102,14 @@ namespace NuGet.CatalogReader
             }
 
             return Id.Equals(other.Id, StringComparison.OrdinalIgnoreCase) && Version.Equals(other.Version);
+        }
+
+        /// <summary>
+        /// Id Version Date: Date
+        /// </summary>
+        public override string ToString()
+        {
+            return $"{Id} {Version.ToFullString()} Date: {CommitTimeStamp.UtcDateTime.ToString("O")}";
         }
     }
 }

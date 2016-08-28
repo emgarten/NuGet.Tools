@@ -13,20 +13,11 @@ namespace NuGet.CatalogReader
         {
             var reader = new CatalogReader(new Uri("https://api.nuget.org/v3/catalog0/index.json"));
 
-            var entries = reader.GetRolledUpEntries(CancellationToken.None).Result;
-
-            var regex = new Regex(@"^(?<Version>\d+(\s*\.\s*\d+){0,3})(?<Release>-[a-z][0-9a-z-]*)?$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.ExplicitCapture);
+            var entries = reader.GetEntries(DateTimeOffset.Parse("2016-07-30T00:05:22.6952071Z"), DateTimeOffset.Parse("2016-07-30T00:06:21.8534934Z"), CancellationToken.None).Result;
 
             foreach (var entry in entries)
             {
-                var s = entry.Version.ToFullString();
-
-                var match = regex.Match(s);
-
-                if (!match.Success)
-                {
-                    Console.WriteLine($"{entry.Id} {s} {entry.CommitTimeStamp}");
-                }
+                Console.WriteLine(entry);
             }
         }
     }
