@@ -17,43 +17,46 @@ namespace FindVSIXManifestNumber
             DirectoryInfo dir = new DirectoryInfo(args[0]);
             DirectoryInfo temp = new DirectoryInfo(Environment.GetEnvironmentVariable("temp"));
 
-            var files = dir.GetFiles("VS.Redist.Common.WPT.NuGet_VS14*");
-            files = files.OrderByDescending(e => e.LastWriteTimeUtc).Take(20).ToArray();
-
-            foreach (var file in files.OrderBy(e => e.LastWriteTimeUtc))
+            foreach (var vsVersion in new[] { "14", "15" })
             {
-                var root = new ZipArchive(file.OpenRead());
+                var files = dir.GetFiles($"VS.Redist.Common.WPT.NuGet_VS{vsVersion}*");
+                files = files.OrderByDescending(e => e.LastWriteTimeUtc).Take(20).ToArray();
 
-                var cabFile = root.GetEntry("nuget14_VisualStudio.cab");
-
-                var cabStream = new MemoryStream();
-
-                string cabPath = Path.Combine(temp.FullName, Guid.NewGuid() + ".tmp");
-                var outStream = File.OpenWrite(cabPath);
-
-                cabFile.Open().CopyTo(outStream, 4096);
-
-                outStream.Close();
-
-                CabInfo cab = new CabInfo(cabPath);
-
-                using (var vsixStream = cab.OpenRead("NuGet.Tools.vsix"))
+                foreach (var file in files.OrderBy(e => e.LastWriteTimeUtc))
                 {
-                    ZipArchive vsixReader = new ZipArchive(vsixStream);
+                    var root = new ZipArchive(file.OpenRead());
 
-                    var manifestEntry = vsixReader.GetEntry("extension.vsixmanifest");
+                    var cabFile = root.GetEntry($"nuget{vsVersion}_VisualStudio.cab");
 
-                    XDocument doc = XDocument.Load(manifestEntry.Open());
+                    var cabStream = new MemoryStream();
 
-                    var identity = doc.Elements().First().Elements().First().Elements().First();
+                    string cabPath = Path.Combine(temp.FullName, Guid.NewGuid() + ".tmp");
+                    var outStream = File.OpenWrite(cabPath);
 
-                    string version = identity.Attributes().FirstOrDefault(e => e.Name.LocalName == "Version").Value;
+                    cabFile.Open().CopyTo(outStream, 4096);
 
-                    Console.WriteLine(version + " " +  file.FullName);
+                    outStream.Close();
+
+                    CabInfo cab = new CabInfo(cabPath);
+
+                    using (var vsixStream = cab.OpenRead("NuGet.Tools.vsix"))
+                    {
+                        ZipArchive vsixReader = new ZipArchive(vsixStream);
+
+                        var manifestEntry = vsixReader.GetEntry("extension.vsixmanifest");
+
+                        XDocument doc = XDocument.Load(manifestEntry.Open());
+
+                        var identity = doc.Elements().First().Elements().First().Elements().First();
+
+                        string buildVersion = identity.Attributes().FirstOrDefault(e => e.Name.LocalName == "Version").Value;
+
+                        Console.WriteLine(buildVersion + " " + file.FullName);
+                    }
+
+
+                    File.Delete(cabPath);
                 }
-
-
-                File.Delete(cabPath);
             }
         }
     }
