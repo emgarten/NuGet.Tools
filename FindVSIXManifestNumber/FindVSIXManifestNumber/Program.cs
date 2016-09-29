@@ -17,7 +17,10 @@ namespace FindVSIXManifestNumber
             DirectoryInfo dir = new DirectoryInfo(args[0]);
             DirectoryInfo temp = new DirectoryInfo(Environment.GetEnvironmentVariable("temp"));
 
-            foreach (var file in dir.GetFiles("VS.Redist.Common.WPT.NuGet_VS14*").OrderBy(e => e.LastWriteTimeUtc))
+            var files = dir.GetFiles("VS.Redist.Common.WPT.NuGet_VS14*");
+            files = files.OrderByDescending(e => e.LastWriteTimeUtc).Take(20).ToArray();
+
+            foreach (var file in files.OrderBy(e => e.LastWriteTimeUtc))
             {
                 var root = new ZipArchive(file.OpenRead());
 
