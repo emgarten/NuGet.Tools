@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TestProjectGraphGenerator
 {
@@ -12,7 +13,7 @@ namespace TestProjectGraphGenerator
     {
         static void Main(string[] args)
         {
-            GenerateInterlinkedPyramid(5, 5, 0).Wait();
+            GenerateInterlinkedPyramid(levels: 8, targetFrameworksPerProject: 5, packagesPerProject: 0).Wait();
         }
 
         /// <summary>
@@ -84,6 +85,38 @@ namespace TestProjectGraphGenerator
                 // Add all projects to the solution
                 var solution = new SimpleTestSolutionContext(pathContext.SolutionRoot, allProjects.ToArray());
                 solution.Create(pathContext.SolutionRoot);
+
+                // Add common imports
+                var commonTargetsPath = Path.Combine(pathContext.SolutionRoot, "common.targets");
+                var commonPropsPath = Path.Combine(pathContext.SolutionRoot, "common.props");
+
+                var emptyXml = XDocument.Parse(@"<?xml version=""1.0"" encoding=""utf-8""?>
+                                                 <Project ToolsVersion=""14.0"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003""></Project>");
+
+                using (var writer = new StreamWriter(File.OpenWrite(commonTargetsPath)))
+                {
+                    emptyXml.Save(writer);
+                }
+
+                using (var writer = new StreamWriter(File.OpenWrite(commonPropsPath)))
+                {
+                    emptyXml.Save(writer);
+                }
+
+                foreach (var file in Directory.GetFiles(pathContext.SolutionRoot, "*.csproj", SearchOption.AllDirectories))
+                {
+                    var xml = XDocument.Load(file);
+
+                    xml.Root.AddFirst(new XElement("Import", new XAttribute("Project", @"../common.props")));
+                    xml.Root.Add(new XElement("Import", new XAttribute("Project", @"../common.targets")));
+
+                    File.Delete(file);
+
+                    using (var writer = new StreamWriter(File.OpenWrite(file)))
+                    {
+                        xml.Save(writer);
+                    }
+                }
             }
         }
 
