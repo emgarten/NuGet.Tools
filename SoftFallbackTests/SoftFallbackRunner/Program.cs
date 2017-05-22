@@ -18,7 +18,7 @@ namespace SoftFallbackRunner
     {
         private static readonly string _runtimeJson = @"D:\tmp\rids.json";
         private static readonly string _output = "d:\\tmp\\";
-        private static readonly string _input = @"C:\Users\justin\.nuget\packages";
+        private static readonly string[] _inputs = new string[] { @"d:\\a", @"e:\\a" };
         private static readonly SemaphoreSlim _sem = new SemaphoreSlim(1, 1);
         private static readonly NuGetFramework nca20 = NuGetFramework.Parse("netcoreapp2.0");
         private static readonly NuGetFramework net461 = NuGetFramework.Parse("net461");
@@ -35,17 +35,30 @@ namespace SoftFallbackRunner
         {
             Directory.CreateDirectory(_output);
 
-            var packages = LocalFolderUtility.GetPackagesV3(_input, NullLogger.Instance);
+            var packages = new Dictionary<string, List<LocalPackageInfo>>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var folder in _inputs)
+            {
+                foreach (var package in LocalFolderUtility.GetPackagesV3(folder, NullLogger.Instance))
+                {
+                    if (!packages.TryGetValue(package.Identity.Id, out var value))
+                    {
+                        value = new List<LocalPackageInfo>();
+                        packages.Add(package.Identity.Id, value);
+                    }
+
+                    value.Add(package);
+                }
+            }
+
             var tasks = new List<Task>();
             var max = 8;
 
-            var ids = new SortedSet<string>(packages.Select(e => e.Identity.Id), StringComparer.OrdinalIgnoreCase);
-
             var selectedPackages = new List<LocalPackageInfo>();
 
-            foreach (var id in ids)
+            foreach (var pair in packages)
             {
-                var package = LocalFolderUtility.GetPackagesV3(_input, id, NullLogger.Instance)
+                var package = pair.Value
                     .OrderByDescending(e => e.Identity.Version)
                     .First();
 
