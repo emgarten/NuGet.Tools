@@ -117,7 +117,10 @@ namespace SoftFallbackRunner
                 var current = GetAssetsWithCurrentFallback(contentItems, conventions, rid, projectFramework, fallbacks);
                 var soft = GetAssetsWithSoftFallback(contentItems, conventions, rid, projectFramework, fallbacks);
 
-                if (!current.SequenceEqual(soft, StringComparer.Ordinal))
+                var softFiltered = soft.Where(e => !e.EndsWith("_._", StringComparison.Ordinal));
+                var currentFiltered = current.Where(e => !e.EndsWith("_._", StringComparison.Ordinal));
+
+                if (!currentFiltered.SequenceEqual(softFiltered, StringComparer.Ordinal))
                 {
                     await Log(test, packagePath);
                     break;
