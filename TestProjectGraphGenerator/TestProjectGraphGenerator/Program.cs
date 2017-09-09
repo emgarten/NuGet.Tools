@@ -13,7 +13,7 @@ namespace TestProjectGraphGenerator
     {
         static void Main(string[] args)
         {
-            GenerateInterlinkedPyramid(levels: 8, targetFrameworksPerProject: 5, packagesPerProject: 0).Wait();
+            GenerateInterlinkedPyramid(levels: 7, targetFrameworksPerProject: 1, packagesPerProject: 0).Wait();
         }
 
         /// <summary>
