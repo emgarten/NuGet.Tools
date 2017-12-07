@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DGtoSolution": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\tmp\\convertDg\\myfile.dg d:\\tmp\\convertDg\\out\\"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TargetGraphComparer": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\tmp\\convertDg\\out\\surface.devx.tests-7f6baa41\\obj\\project.assets.json"
+    }
+  }
+}
